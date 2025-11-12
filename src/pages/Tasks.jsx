@@ -4,6 +4,8 @@ import TaskInput from "../components/TaskInput";
 import FilterSort from "../components/FilterSort";
 import { useAuth } from "../context/AuthContext";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function Tasks() {
   const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState("");
@@ -20,7 +22,7 @@ function Tasks() {
     setError("");
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/tasks", {
+      const res = await fetch(`${API_BASE_URL}/api/tasks`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Failed to fetch tasks");
@@ -34,14 +36,12 @@ function Tasks() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/categories")
+    fetch(`${API_BASE_URL}/api/categories`)
       .then((res) => res.json())
       .then(setCategories);
   }, []);
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+  useEffect(fetchTasks, []);
 
   async function addTask(e) {
     e.preventDefault();
@@ -49,7 +49,7 @@ function Tasks() {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/tasks", {
+      const res = await fetch(`${API_BASE_URL}/api/tasks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +71,7 @@ function Tasks() {
 
   async function toggleTask(id) {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000/api/tasks/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/api/tasks/${id}`, {
       method: "PATCH",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -81,7 +81,7 @@ function Tasks() {
 
   async function deleteTask(id) {
     const token = localStorage.getItem("token");
-    await fetch(`http://localhost:5000/api/tasks/${id}`, {
+    await fetch(`${API_BASE_URL}/api/tasks/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });

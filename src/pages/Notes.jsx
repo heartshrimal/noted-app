@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import NoteInput from "../components/NoteInput";
 import NoteItem from "../components/NoteItem";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function Notes() {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -14,7 +16,7 @@ function Notes() {
       setError("");
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:5000/api/notes", {
+        const res = await fetch(`${API_BASE_URL}/api/notes`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error("Failed to fetch notes");
@@ -35,7 +37,7 @@ function Notes() {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/notes", {
+      const res = await fetch(`${API_BASE_URL}/api/notes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -57,7 +59,7 @@ function Notes() {
   const delNote = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/notes/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/notes/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -72,7 +74,7 @@ function Notes() {
   const updateNote = async (id, updatedData) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/notes/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/notes/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

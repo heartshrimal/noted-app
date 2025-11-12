@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     // verify token and fetch user data
-    fetch("http://localhost:5000/api/auth/me", {
+    fetch(`${API_BASE_URL}/api/auth/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(async (res) => {
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
 
   // register a new user
   const register = async (name, email, password) => {
-    const res = await fetch("http://localhost:5000/api/auth/register", {
+    const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password }),
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
 
   // login existing user
   const login = async (email, password) => {
-    const res = await fetch("http://localhost:5000/api/auth/login", {
+    const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
